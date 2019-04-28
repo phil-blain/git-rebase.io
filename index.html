@@ -57,7 +57,23 @@
           Each step of this guide can be run on a fresh sandbox, so it's not
           necessary to re-do every task.
         </p>
-        <h2>Amending your last commit</h2>
+      </div>
+      <div class="intro" style="padding: 1rem 0">
+        <h3>Table of Contents</h3>
+        <ol>
+          <li><a href="#amending">Amending your last commit</a></li>
+          <li><a href="#fixup">Fixing up older commits</a></li>
+          <li><a href="#squash">Squashing several commits into one</a></li>
+          <li><a href="#edit">Splitting one commit into several</a></li>
+          <li><a href="#reorder">Reordering history</a></li>
+          <li><a href="#pick">Cherry picking</a></li>
+          <li><a href="#pull-conflicts">git pull --rebase, and resolving conflicts</a></li>
+          <li><a href="#rebase">Using git rebase to... rebase</a></li>
+          <li><a href="#reflog">Help! I broke it!</a></li>
+        </ol>
+      </div>
+      <div class="content">
+        <h2 id="amending">Amending your last commit</h2>
         <p>
           Let's start with something simple: fixing your most recent commit.
           Let's add a file to our sandbox - and make a mistake:
@@ -93,7 +109,7 @@ index 0000000..cd08755
 +++ b/greeting.txt</strong>
 <span style="color: #06C">@@ -0,0 +1 @@</span>
 <span style="color: green">+Hello world!</span></pre>
-        <h2 id="fix-old-commits">Fixing up older commits</h2>
+        <h2 id="fixup">Fixing up older commits</h2>
         <p>
           Amending only works for the most recent commit. What happens if you
           need to correct an older commit? Let's start by setting up our sandbox
@@ -160,7 +176,7 @@ git commit -a -m"fixup greeting.txt"</pre>
         <pre>$ git log -2 --oneline
 <span style="color: #A80">fcff6ae (</span><span style="color: blue">HEAD -&gt;</span> <span style="color: green">master</span><span style="color: #cc9000">)</span> Add farewell.txt
 <span style="color: #A80">a479e94</span> Add greeting.txt</pre>
-        <h2>Squashing several commits into one</h2>
+        <h2 id="squash">Squashing several commits into one</h2>
         <p>
           As you work, you may find it useful to write lots of commits as you
           reach small milestones or fix bugs in previous commits. However, it
@@ -354,12 +370,12 @@ git branch -D squash</pre>
           brought back in sync. In the course of your normal work, rebase is
           often more appropriate.
         </p>
-        <h2>Splitting one commit into several</h2>
-        <h2>Reordering history</h2>
-        <h2>Cherry picking</h2>
+        <h2 id="edit">Splitting one commit into several</h2>
+        <h2 id="reorder">Reordering history</h2>
+        <h2 id="pick">Cherry picking</h2>
         <!-- example of updating a dependent branch after another changes -->
-        <h2>git pull --rebase, and resolving conflicts</h2>
-        <h2>Using git rebase to... rebase</h2>
+        <h2 id="pull-conflicts">git pull --rebase, and resolving conflicts</h2>
+        <h2 id="rebase">Using git rebase to... rebase</h2>
         <p>
           Ironically, the feature of git rebase that I use the least is the one
           it's named for: rebasing branches. Say you have the following
@@ -380,7 +396,7 @@ git rebase master</pre>
         <pre>o--o--o--o--&gt; master
    |     \--o--&gt; feature-2
    \--o--o--&gt; feature-1</pre>
-        <h2>Help! I broke it!</h2>
+        <h2 id="reflog">Help! I broke it!</h2>
       </div>
       <footer>
         <sup id="note-1">
