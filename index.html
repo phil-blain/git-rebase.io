@@ -69,7 +69,7 @@
           <li><a href="#fixup">Fixing up older commits</a></li>
           <li><a href="#squash">Squashing several commits into one</a></li>
           <li><a href="#edit">Splitting one commit into several</a></li>
-          <li><a href="#reorder">Reordering history</a></li>
+          <li><a href="#reorder">Reordering commits</a></li>
           <li><a href="#pick">Cherry picking</a></li>
           <li><a href="#conflicts">Resolving conflicts</a></li>
           <li><a href="#pull">git pull --rebase</a></li>
@@ -550,7 +550,55 @@ git rebase --continue</pre>
 <span style="color: #A80">fe19cc3 (<span style="color: blue">HEAD -&gt;</span> <span style="color: green">master</span>)</span> Prompt user for their name
 <span style="color: #A80">659a489</span> Add get_name function to C program
 <span style="color: #A80">237b246</span> Add C program skeleton</pre>
-        <h2 id="reorder">Reordering history</h2>
+        <h2 id="reorder">Reordering commits</h2>
+        <p>
+          This one is pretty easy. Let's start by setting up our sandbox:
+        </p>
+        <pre>echo "Goodbye now!" &gt;farewell.txt
+git add farewell.txt
+git commit -m"Add farewell.txt"
+echo "Hello there!" &gt;greeting.txt
+git add greeting.txt
+git commit -m"Add greeting.txt"
+echo "How're you doing?" &gt;inquiry.txt
+git add inquiry.txt
+git commit -m"Add inquiry.txt"</pre>
+        <p>
+          The git log should now look like this:
+        </p>
+        <pre>
+<span style="color: #A80">f03baa5 (<span style="color: blue">HEAD -&gt;</span> <span style="color: green">master</span>)</span> Add inquiry.txt
+<span style="color: #A80">a4cebf7</span> Add greeting.txt
+<span style="color: #A80">90bb015</span> Add farewell.txt</pre>
+        <p>
+          Clearly, this is all out of order. Let's do an interactive rebase of
+          the past 3 commits to resolve this. Run <code>git rebase -i
+            HEAD~3</code> and this rebase plan will appear:
+        </p>
+        <pre><!--
+--><span style="color: #A80">pick</span> <span style="color: #06c">90bb015</span> <span style="color: purple">Add farewell.txt</span>
+<span style="color: #A80">pick</span> <span style="color: #06c">a4cebf7</span> <span style="color: purple">Add greeting.txt</span>
+<span style="color: #A80">pick</span> <span style="color: #06c">f03baa5</span> <span style="color: purple">Add inquiry.txt</span>
+
+<span style="color: grey"># Rebase fe19cc3..f03baa5 onto fe19cc3 (3 commands)
+#
+# Commands:
+# p, pick &lt;commit&gt; = use commit
+#
+# These lines can be re-ordered; they are executed from top to bottom.</span></pre>
+        <p>
+          The fix is now straightforward: just reorder these lines in the order
+          you wish for the commits to appear. Should look something like this:
+        </p>
+        <pre><!--
+--><span style="color: #A80">pick</span> <span style="color: #06c">a4cebf7</span> <span style="color: purple">Add greeting.txt</span>
+<span style="color: #A80">pick</span> <span style="color: #06c">f03baa5</span> <span style="color: purple">Add inquiry.txt</span>
+<span style="color: #A80">pick</span> <span style="color: #06c">90bb015</span> <span style="color: purple">Add farewell.txt</span></pre>
+        <p>
+          Save and close your editor and git will do the rest for you. Note that
+          it's possible to end up with conflicts when you do this in practice -
+          <a href="#conflicts">click here for help resolving conflicts</a>.
+        </p>
         <h2 id="pick">Cherry picking</h2>
         <!-- example of updating a dependent branch after another changes -->
         <h2 id="conflicts">Resolving conflicts</h2>
