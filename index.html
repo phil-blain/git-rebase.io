@@ -201,6 +201,13 @@ done</pre>
 # Commands:
 # p, pick &lt;commit&gt; = use commit
 # s, squash &lt;commit&gt; = use commit, but meld into previous commit</span></pre>
+        <div class="alert">
+          <strong>Tip</strong>: your local master branch evolves independently
+          of the remote master branch, but your git repo still remembers it as
+          <code>origin/master</code>. Combining it with this trick, <code>git
+            rebase -i origin/master</code> is often the most convenient way to
+          rebase all the commits you have locally!
+        </div>
         <p>
           We're going to squash all of these changes into the first commit. To
           do this, change every "pick" operation to "squash", except for the
@@ -350,6 +357,7 @@ git branch -D squash</pre>
         <h2>Splitting one commit into several</h2>
         <h2>Reordering history</h2>
         <h2>Cherry picking, sort of</h2>
+        <h2>git pull --rebase, and resolving conflicts</h2>
         <h2>Help! I broke it!</h2>
       </div>
       <footer>
