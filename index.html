@@ -175,8 +175,8 @@ git commit -a -m"fixup greeting.txt"</pre>
           speed things up next time.
         </div>
         <p>
-          Now save and quit your editor - git will run these commands. We can
-          use git log and git show to verify that it worked:
+          Save and quit your editor - git will run these commands. We can check
+          the log to verify the result:
         </p>
         <pre>$ git log -2 --oneline
 <span style="color: #A80">fcff6ae (</span><span style="color: blue">HEAD -&gt;</span> <span style="color: green">master</span><span style="color: #cc9000">)</span> Add farewell.txt
@@ -224,10 +224,10 @@ done</pre>
 # s, squash &lt;commit&gt; = use commit, but meld into previous commit</span></pre>
         <div class="tip">
           <strong>Tip</strong>: your local master branch evolves independently
-          of the remote master branch, but your git repo still remembers it as
-          <code>origin/master</code>. Combining it with this trick, <code>git
-            rebase -i origin/master</code> is often the most convenient way to
-          rebase all the commits you have locally!
+          of the remote master branch, and git stores the remote branch as
+          <code>origin/master</code>. Combined with this trick, <code>git
+            rebase -i origin/master</code> is often a very convenient way to
+          rebase all of the commits which haven't been merged upstream yet!
         </div>
         <p>
           We're going to squash all of these changes into the first commit. To
@@ -370,10 +370,9 @@ git rebase squash
 git branch -D squash</pre>
         <p>
           We generally prefer to avoid using git merge unless we're actually
-          merging unrelated histories. If you have two highly divergent
-          branches, a git merge is useful to have a record of when they were
-          brought back in sync. In the course of your normal work, rebase is
-          often more appropriate.
+          merging unrelated histories. If you have two divergent branches, a
+          git merge is useful to have a record of when they were... merged. In
+          the course of your normal work, rebase is often more appropriate.
         </p>
         <h2 id="edit">Splitting one commit into several</h2>
         <p>
@@ -384,7 +383,7 @@ git branch -D squash</pre>
           your shell to do this quickly):
         </p>
         <pre><span style="color: grey">cat &lt;&lt;EOF >main.c</span>
-<span style="color: blue">int</span> <strong>main</strong>(<span style="color: blue">int</span> <strong>argc</strong>, <span style="color: blue">char</span> *<strong>argv</strong>[]) {
+<span style="color: blue">int</span> <strong>main</strong>(<span style="color: blue">int</span> argc, <span style="color: blue">char</span> *argv[]) {
     <span style="color: maroon">return</span> 0;
 }
 <span style="color: grey">EOF</span></pre>
@@ -442,11 +441,11 @@ Once you are satisfied with your changes, run
 
   git rebase --continue</pre>
         <p>
-          We could follow its instructions for <em>adding</em> changes to the
-          commit, but instead let's do a <em>soft reset</em> by running
-          <code>git reset HEAD^</code>. If you run <code>git status</code> after
-          this, you'll see that it un-commits the latest commit and adds its
-          changes to the working tree:
+          We could follow these instructions to <em>add</em> new changes to the
+          commit, but instead let's do a "soft reset" by running <code>git
+            reset HEAD^</code>. If you run <code>git status</code> after this,
+          you'll see that it un-commits the latest commit and adds its changes
+          to the working tree:
         </p>
         <pre>
 <span style="color: grey">Last commands done (2 commands done):
@@ -514,7 +513,7 @@ index b1d9c2c..3463610 100644
           This hunk looks better - a single, self-contained change. Let's hit
           "y" to answer the question (and stage that "hunk"), then "q" to "quit"
           the interactive session and proceed with the commit. Your editor will
-          pop up to enter a suitable commit message.
+          pop up to ask you to enter a suitable commit message.
         </p>
         <pre>
 <span style="color: #A80">Add get_name function to C program</span>
