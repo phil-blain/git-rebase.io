@@ -16,7 +16,7 @@
             rel="noopener"
             href="https://git-scm.com"
           >Git</a>'s core value-adds is the ability to <em>edit history</em>.
-          Unlike version control systems that treat the history is a sacred
+          Unlike version control systems that treat the history as a sacred
           record, in git we can change history to suit our needs. This gives us
           a lot of powerful tools and allows us to curate a good commit history
           in the same way we use refactoring to uphold good software design
@@ -414,9 +414,9 @@ git commit -m"Add C program skeleton"</pre>
         </p>
         <pre>git commit -a -m"Flesh out C program"</pre>
         <p>
-          The first step will be to start an interactive rebase. Let's rebase
-          both commits with <code>git rebase -i HEAD~2</code>, giving us this
-          rebase plan:
+          The first step is to start an interactive rebase. Let's rebase both
+          commits with <code>git rebase -i HEAD~2</code>, giving us this rebase
+          plan:
         </p>
         <pre><!--
 --><span style="color: #A80">pick</span> <span style="color: #06c">237b246</span> <span style="color: purple">Add C program skeleton</span>
@@ -444,8 +444,8 @@ Once you are satisfied with your changes, run
           We could follow its instructions for <em>adding</em> changes to the
           commit, but instead let's do a <em>soft reset</em> by running
           <code>git reset HEAD^</code>. If you run <code>git status</code> after
-          this, you'll see that it un-commits the latest commit and re-adds
-          those changes to the working tree:
+          this, you'll see that it un-commits the latest commit and adds its
+          changes to the working tree:
         </p>
         <pre>
 <span style="color: grey">Last commands done (2 commands done):
