@@ -169,7 +169,7 @@ git commit -a -m"fixup greeting.txt"</pre>
 --><span style="color: #A80">pick</span> <span style="color: #06c">8d3fc77</span> <span style="color: purple">Add greeting.txt</span>
 <span style="color: #A80">fixup</span> <span style="color: #06c">0b9d0bb</span> <span style="color: purple">fixup greeting.txt</span>
 <span style="color: #A80">pick</span> <span style="color: #06c">2a73a77</span> <span style="color: purple">Add farewell.txt</span></pre>
-        <div class="alert">
+        <div class="tip">
           <strong>Tip</strong>: We can also abbreviate this with just "f" to
           speed things up next time.
         </div>
@@ -221,7 +221,7 @@ done</pre>
 # Commands:
 # p, pick &lt;commit&gt; = use commit
 # s, squash &lt;commit&gt; = use commit, but meld into previous commit</span></pre>
-        <div class="alert">
+        <div class="tip">
           <strong>Tip</strong>: your local master branch evolves independently
           of the remote master branch, but your git repo still remembers it as
           <code>origin/master</code>. Combining it with this trick, <code>git
@@ -322,8 +322,8 @@ Add 'd' to squash.txt
           want. The old commit messages may be useful for reference when writing
           the new one, though.
         </p>
-        <div class="alert">
-          <strong>Note</strong>: the "fixup" command you learned about in the
+        <div class="tip">
+          <strong>Tip</strong>: the "fixup" command you learned about in the
           previous section can be used for this purpose, too - but it discards
           the messages of the squashed commits.
         </div>
@@ -407,7 +407,7 @@ git rebase master</pre>
           1: we add an empty initial commit to simplify the rest of the
           tutorial, because rebasing the initial commit of your repository
           requires special commands (namely <code>git rebase --root</code>).
-          <a href="ref-1">↩</a>
+          <a href="#ref-1">↩</a>
         </sup>
       </footer>
     </div>

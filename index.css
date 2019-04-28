@@ -126,12 +126,23 @@ pre {
 	margin-top: 0.5rem;
 }
 
-.alert {
-	background: #f64d27;
-	color: white;
+.alert, .tip {
 	padding: 0.5rem;
 	margin-bottom: 0.5rem;
-	border: 1px solid #ab2e14;
+	border-width: 1px;
+	border-style: solid;
+}
+
+.alert {
+	color: white;
+	background: #f64d27;
+	border-color: #ab2e14;
+}
+
+.tip {
+	color: #004085;
+	background: #cce5ff;
+	border-color: #b8daff;
 }
 
 .alert a {
