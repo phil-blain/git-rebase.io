@@ -356,8 +356,30 @@ git branch -D squash</pre>
         </p>
         <h2>Splitting one commit into several</h2>
         <h2>Reordering history</h2>
-        <h2>Cherry picking, sort of</h2>
+        <h2>Cherry picking</h2>
+        <!-- example of updating a dependent branch after another changes -->
         <h2>git pull --rebase, and resolving conflicts</h2>
+        <h2>Using git rebase to... rebase</h2>
+        <p>
+          Ironically, the feature of git rebase that I use the least is the one
+          it's named for: rebasing branches. Say you have the following
+          branches:
+        </p>
+        <pre>o--o--o--o--&gt; master
+   \--o--o--&gt; feature-1
+      \--o--&gt; feature-2</pre>
+        <p>
+          It turns out feature-2 doesn't depend on any of the changes in
+          feature-1, so you can just base it off of master. The fix is thus:
+        </p>
+        <pre>git checkout feature-2
+git rebase master</pre>
+        <p>
+          Your history now looks like this:
+        </p>
+        <pre>o--o--o--o--&gt; master
+   |     \--o--&gt; feature-2
+   \--o--o--&gt; feature-1</pre>
         <h2>Help! I broke it!</h2>
       </div>
       <footer>
