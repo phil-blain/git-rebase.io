@@ -20,7 +20,7 @@
           record, in git we can change history to suit our needs. This gives us
           a lot of powerful tools and allows us to curate a good commit history
           in the same way we use refactoring to uphold good software design
-          practices.  These tools can be a little bit intimidating to the
+          practices. These tools can be a little bit intimidating to the
           novice or even intermediate git user, but this guide will help to
           demystify the powerful
           <a
@@ -375,6 +375,181 @@ git branch -D squash</pre>
           often more appropriate.
         </p>
         <h2 id="edit">Splitting one commit into several</h2>
+        <p>
+          Sometimes the opposite problem happens - one commit is just too big.
+          Let's look into splitting it up. This time, let's write some actual
+          code. Start with a simple C program<sup><a href="#note-2"
+              id="ref-2">2</a></sup> (you can still copy+paste this snippet into
+          your shell to do this quickly):
+        </p>
+        <pre><span style="color: grey">cat &lt;&lt;EOF >main.c</span>
+<span style="color: blue">int</span> <strong>main</strong>(<span style="color: blue">int</span> <strong>argc</strong>, <span style="color: blue">char</span> *<strong>argv</strong>[]) {
+    <span style="color: maroon">return</span> 0;
+}
+<span style="color: grey">EOF</span></pre>
+        <p>We'll commit this first.</p>
+        <pre>git add main.c
+git commit -m"Add C program skeleton"</pre>
+        <p>
+          Next, let's extend the program a bit:
+        </p>
+        <pre><span style="color: grey">cat &lt;&lt;EOF >main.c</span>
+<span style="color: maroon">#include</span> &ltstdio.h&gt;
+
+<span style="color: blue">const char</span> *<strong>get_name</strong>() {
+    <span style="color: blue">static char</span> buf[128];
+    scanf(<span style="color: red">"%s"</span>, buf);
+    <span style="color: maroon">return</span> buf;
+}
+
+<span style="color: blue">int</span> <strong>main</strong>(<span style="color: blue">int</span> argc, <span style="color: blue">char</span> *argv[]) {
+    printf(<span style="color: red">"What's your name? "</span>);
+    <span style="color: blue">const char</span> *name = get_name();
+    printf(<span style="color: red">"Hello, %s!\n"</span>, name);
+    <span style="color: maroon">return</span> 0;
+}
+<span style="color: grey">EOF</span></pre>
+        <p>
+          After we commit this, we'll be ready to learn how to split it up.
+        </p>
+        <pre>git commit -a -m"Flesh out C program"</pre>
+        <p>
+          The first step will be to start an interactive rebase. Let's rebase
+          both commits with <code>git rebase -i HEAD~2</code>, giving us this
+          rebase plan:
+        </p>
+        <pre><!--
+--><span style="color: #A80">pick</span> <span style="color: #06c">237b246</span> <span style="color: purple">Add C program skeleton</span>
+<span style="color: #A80">pick</span> <span style="color: #06c">b3f188b</span> <span style="color: purple">Flesh out C program</span>
+
+<span style="color: grey"># Rebase c785f47..b3f188b onto c785f47 (2 commands)
+#
+# Commands:
+# p, pick &lt;commit&gt; = use commit
+# e, edit &lt;commit&gt; = use commit, but stop for amending</span></pre>
+        <p>
+          Change the second commit's command from "pick" to "edit", then save
+          and close your editor. Git will think about this for a second, then
+          present you with this:
+        </p>
+        <pre>Stopped at b3f188b...  Flesh out C program
+You can amend the commit now, with
+
+  git commit --amend
+
+Once you are satisfied with your changes, run
+
+  git rebase --continue</pre>
+        <p>
+          We could follow its instructions for <em>adding</em> changes to the
+          commit, but instead let's do a <em>soft reset</em> by running
+          <code>git reset HEAD^</code>. If you run <code>git status</code> after
+          this, you'll see that it un-commits the latest commit and re-adds
+          those changes to the working tree:
+        </p>
+        <pre>
+<span style="color: grey">Last commands done (2 commands done):
+   pick 237b246 Add C program skeleton
+   edit b3f188b Flesh out C program
+No commands remaining.
+You are currently splitting a commit while rebasing branch 'master' on 'c785f47'.
+  (Once your working directory is clean, run "git rebase --continue")</span>
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+  <span style="color: red">modified:   main.c</span>
+
+no changes added to commit (use "git add" and/or "git commit -a")</pre>
+        <p>
+          To split this up, we're going to do an <em>interactive commit</em>.
+          This allows us to selectively commit only specific changes from the
+          working tree. Run <code>git commit -p</code> to start this process,
+          and you'll be presented with the following prompt:
+        </p>
+        <pre><strong>diff --git a/main.c b/main.c
+index b1d9c2c..3463610 100644
+--- a/main.c
++++ b/main.c</strong>
+<span style="color: #06C">@@ -1,3 +1,14 @@</span>
+<span style="color: green">+#include &ltstdio.h&gt;
++
++const char *get_name() {
++    static char buf[128];
++    scanf("%s", buf);
++    return buf;
++}
++</span>
+ int main(int argc, char *argv[]) {
+<span style="color: green">+    printf("What's your name? ");
++    const char *name = get_name();
++    printf("Hello, %s!\n", name);</span>
+     return 0;
+ }
+<strong style="color: #06C">Stage this hunk [y,n,q,a,d,s,e,?]? </strong></pre>
+        <p>
+          Git has presented you with just one "hunk" (i.e. a single change) to
+          consider committing. This one is too big, though - let's use the "s"
+          command to "split" up the hunk into smaller parts.
+        </p>
+        <pre><strong>Split into 2 hunks.</strong>
+<span style="color: #06C">@@ -1 +1,9 @@</span>
+<span style="color: green">+#include <stdio.h>
++
++const char *get_name() {
++    static char buf[128];
++    scanf("%s", buf);
++    return buf;
++}
++
+ int main(int argc, char *argv[]) {</span>
+<strong style="color: #06C">Stage this hunk [y,n,q,a,d,j,J,g,/,e,?]? </strong></pre>
+        <div class="tip">
+          <strong>Tip</strong>: If you're curious about the other options, press
+          "?" to summarize them.
+        </div>
+        <p>
+          This hunk looks better - a single, self-contained change. Let's hit
+          "y" to answer the question (and stage that "hunk"), then "q" to "quit"
+          the interactive session and proceed with the commit. Your editor will
+          pop up to enter a suitable commit message.
+        </p>
+        <pre>
+<span style="color: #A80">Add get_name function to C program</span>
+
+<span style="color: grey"># Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# interactive rebase in progress; onto c785f47
+# Last commands done (2 commands done):
+#    pick 237b246 Add C program skeleton
+#    edit b3f188b Flesh out C program
+# No commands remaining.
+# You are currently splitting a commit while rebasing branch 'master' on 'c785f47'.
+#
+# Changes to be committed:
+#	<span style="color: green">modified</span>:   <span style="color: purple">main.c</span>
+#
+# Changes not staged for commit:
+#	<span style="color: green">modified</span>:   <span style="color: purple">main.c</span>
+#</span></pre>
+        <p>
+          Save and close your editor, then we'll make the second commit. We
+          could do another interactive commit, but since we just want to include
+          the rest of the changes in this commit we'll just do this:
+        </p>
+        <pre>git commit -a -m"Prompt user for their name"
+git rebase --continue</pre>
+        <p>
+          That last command tells git that we're done editing this commit, and
+          to continue to the next rebase command. That's it! Run <code>git
+          log</code> to see the fruits of your labor:
+        </p>
+        <pre>$ git log -3 --oneline
+<span style="color: #A80">fe19cc3 (<span style="color: blue">HEAD -&gt;</span> <span style="color: green">master</span>)</span> Prompt user for their name
+<span style="color: #A80">659a489</span> Add get_name function to C program
+<span style="color: #A80">237b246</span> Add C program skeleton</pre>
         <h2 id="reorder">Reordering history</h2>
         <h2 id="pick">Cherry picking</h2>
         <!-- example of updating a dependent branch after another changes -->
@@ -403,12 +578,22 @@ git rebase master</pre>
         <h2 id="reflog">Help! I broke it!</h2>
       </div>
       <footer>
-        <sup id="note-1">
-          1: we add an empty initial commit to simplify the rest of the
-          tutorial, because rebasing the initial commit of your repository
-          requires special commands (namely <code>git rebase --root</code>).
-          <a href="#ref-1">↩</a>
-        </sup>
+        <div>
+          <sup id="note-1">
+            1: We add an empty initial commit to simplify the rest of the
+            tutorial, because rebasing the initial commit of your repository
+            requires special commands (namely <code>git rebase --root</code>).
+            <a href="#ref-1">↩</a>
+          </sup>
+        </div>
+        <div>
+          <sup id="note-2">
+            2: If you want to compile this program, run <strong><code>cc -o main
+                main.c</code></strong>, then
+            <strong><code>./main</code></strong> to run the result.
+            <a href="#ref-2">↩</a>
+          </sup>
+        </div>
       </footer>
     </div>
   </body>
