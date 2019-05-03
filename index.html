@@ -70,9 +70,9 @@
           <li><a href="#squash">Squashing several commits into one</a></li>
           <li><a href="#edit">Splitting one commit into several</a></li>
           <li><a href="#reorder">Reordering commits</a></li>
+          <li><a href="#pull">git pull --rebase</a></li>
           <li><a href="#rebase">Using git rebase to... rebase</a></li>
           <li><a href="#conflicts">Resolving conflicts</a></li>
-          <li><a href="#pull">git pull --rebase</a></li>
           <li><a href="#reflog">Help! I broke it!</a></li>
         </ol>
       </div>
@@ -495,15 +495,15 @@ index b1d9c2c..3463610 100644
         </p>
         <pre><strong>Split into 2 hunks.</strong>
 <span style="color: #06C">@@ -1 +1,9 @@</span>
-<span style="color: green">+#include <stdio.h>
+<span style="color: green">+#include &lt;stdio.h&gt;
 +
 +const char *get_name() {
 +    static char buf[128];
 +    scanf("%s", buf);
 +    return buf;
 +}
-+
- int main(int argc, char *argv[]) {</span>
++</span>
+ int main(int argc, char *argv[]) {
 <strong style="color: #06C">Stage this hunk [y,n,q,a,d,j,J,g,/,e,?]? </strong></pre>
         <div class="tip">
           <strong>Tip</strong>: If you're curious about the other options, press
@@ -601,6 +601,34 @@ git commit -m"Add inquiry.txt"</pre>
           it's possible to end up with conflicts when you do this in practice -
           <a href="#conflicts">click here for help resolving conflicts</a>.
         </p>
+        <h2 id="pull">git pull --rebase</h2>
+        <p>
+          If you've been writing some commits on a branch which has been updated
+          upstream, normally <code>git pull</code> will create a merge commit.
+          In this respect, <code>git pull</code>'s behavior by default is
+          equivalent to:
+        </p>
+        <pre>git fetch origin
+git merge origin/master</pre>
+        <p>
+          There's another option, which is often more useful and leads to a much
+          cleaner history: <code>git pull --rebase</code>. Unlike the merge
+          approach, this is equivalent to the following:
+        </p>
+        <pre>git fetch origin
+git rebase origin/master</pre>
+        <p>
+          The merge approach is simpler and easier to understand, but the rebase
+          approach is almost always what you want to do if you understand how to
+          use git rebase. If you like, you can set it as the default behavior
+          like so:
+        </p>
+        <pre>git config --global pull.rebase true</pre>
+        <p>
+          When you do this, technically you're applying the procedure we
+          discuss in the next section... so let's explain what it means to do
+          that deliberately, too.
+        </p>
         <h2 id="rebase">Using git rebase to... rebase</h2>
         <p>
           Ironically, the feature of git rebase that I use the least is the one
@@ -653,29 +681,6 @@ git rebase master</pre>
           branch.
         </p>
         <p>
-        <h2 id="pull">git pull --rebase</h2>
-        <p>
-          If you've been writing some commits on a branch which has been updated
-          upstream, normally <code>git pull</code> will create a merge commit.
-          In this respect, <code>git pull</code>'s behavior by default is
-          equivalent to:
-        </p>
-        <pre>git fetch origin
-git merge origin/master</pre>
-        <p>
-          There's another option, which is often more useful and leads to a much
-          cleaner history: <code>git pull --rebase</code>. Unlike the merge
-          approach, this is equivalent to the following:
-        </p>
-        <pre>git fetch origin
-git rebase origin/master</pre>
-        <p>
-          The merge approach is simpler and easier to understand, but the rebase
-          approach is almost always what you want to do if you understand how to
-          use git rebase. If you like, you can set it as the default behavior
-          like so:
-        </p>
-        <pre>git config --global pull.rebase true</pre>
         <h2 id="reflog">Help! I broke it!</h2>
         <p>
           No doubt about it - rebasing can be hard sometimes. If you've made a
