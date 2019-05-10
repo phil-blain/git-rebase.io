@@ -448,7 +448,8 @@ Once you are satisfied with your changes, run
   git rebase --continue</pre>
         <p>
           We could follow these instructions to <em>add</em> new changes to the
-          commit, but instead let's do a "soft reset" by running <code>git
+          commit, but instead let's do a "soft reset"<sup><a href="#note-3"
+          id="ref-3">3</a></sup> by running <code>git
             reset HEAD^</code>. If you run <code>git status</code> after this,
           you'll see that it un-commits the latest commit and adds its changes
           to the working tree:
@@ -652,8 +653,8 @@ git rebase origin/master</pre>
 git rebase master</pre>
         <p>
           The non-interactive rebase does the default operation for all
-          implicated commits ("pick")<a id="ref-3"
-            href="#note-3"><sup>3</sup></a>, which simply rolls your history
+          implicated commits ("pick")<a id="ref-4"
+            href="#note-4"><sup>4</sup></a>, which simply rolls your history
           back to the last common anscestor and replays the commits from both
           branches. Your history now looks like this:
         </p>
@@ -718,11 +719,22 @@ git rebase master</pre>
         </div>
         <div>
           <sup id="note-3">
-            3: Actually, it doesn't. The default non-interactive behavior
+            3: Actually, it's a "mixed reset". A "soft reset" (done with
+            <code>git reset --soft</code>) would keep the changes staged,
+            so that you don't need to <code>git add</code> them again,
+            and can commit them all in one go. This is not what we want
+            here. We want to selectively stage parts of the changes
+            in order to split the commit.
+            <a href="#ref-3">↩</a>
+          </sup>
+        </div>
+        <div>
+          <sup id="note-4">
+            4: Actually, it doesn't. The default non-interactive behavior
             differs slightly from the interactive behavior at the time of
             writing, in a way which is generally not important. This may change
             in the future - the relevant discussions are underway on the git
-            mailing list. <a href="#ref-3">↩</a>
+            mailing list. <a href="#ref-4">↩</a>
           </sup>
         </div>
       </footer>
