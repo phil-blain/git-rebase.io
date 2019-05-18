@@ -642,25 +642,25 @@ git rebase origin/master</pre>
           it's named for: rebasing branches. Say you have the following
           branches:
         </p>
-        <pre>o--o--o--o--&gt; master
-   \--o--o--&gt; feature-1
-      \--o--&gt; feature-2</pre>
+        <pre>A--B--C--D--&gt; master
+   \--E--F--&gt; feature-1
+      \--G--&gt; feature-2</pre>
         <p>
-          It turns out feature-2 doesn't depend on any of the changes in
-          feature-1, so you can just base it off of master. The fix is thus:
+          It turns out feature-2 doesn't depend on any of the changes
+          in feature-1, that is, on commit E, so you can just base it
+          off of master. The fix is thus:
         </p>
-        <pre>git checkout feature-2
-git rebase master</pre>
+        <pre>git rebase --onto master feature-1 feature-2</pre>
         <p>
           The non-interactive rebase does the default operation for all
           implicated commits ("pick")<a id="ref-4"
-            href="#note-4"><sup>4</sup></a>, which simply rolls your history
-          back to the last common anscestor and replays the commits from both
-          branches. Your history now looks like this:
+            href="#note-4"><sup>4</sup></a>, which simply replays the
+          commits in feature-2 that are not in feature-1 on top of
+          master. Your history now looks like this:
         </p>
-        <pre>o--o--o--o--&gt; master
-   |     \--o--&gt; feature-2
-   \--o--o--&gt; feature-1</pre>
+        <pre>A--B--C--D--&gt; master
+   |     \--G--&gt; feature-2
+   \--E--F--&gt; feature-1</pre>
         <h2 id="conflicts">Resolving conflicts</h2>
           The details on resolving merge conflicts are beyond the scope of
           this guide - keep your eye out for another guide for this in the
