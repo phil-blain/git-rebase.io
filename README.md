@@ -1,4 +1,4 @@
-# git-send-email.io
+# git-rebase.io
 
 The source of [git-rebase.io](https://git-rebase.io). Send
 patches to
