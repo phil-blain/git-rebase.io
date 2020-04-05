@@ -610,13 +610,21 @@ git commit -m"Add inquiry.txt"</pre>
         </p>
         <h2 id="pull">git pull --rebase</h2>
         <p>
-          If you've been writing some commits on a branch which has been updated
-          upstream, normally <code>git pull</code> will create a merge commit.
+          If you've been writing some commits on a branch <code>&lt;branch&gt;</code> which has been updated
+          upstream, say on remote <code>origin</code>, normally <code>git pull</code> will create a merge commit.
           In this respect, <code>git pull</code>'s behavior by default is
           equivalent to:
         </p>
-        <pre>git fetch origin
-git merge origin/master</pre>
+        <pre>git fetch origin &lt;branch&gt;
+git merge origin/&lt;branch&gt;</pre>
+        <p>
+          This assumes that the local branch <code>&lt;branch&gt;</code> is configured to track the <code>&lt;branch&gt</code> branch
+          from the <code>origin</code> remote, i.e.:
+        </p>
+          <pre>$ git config branch.&lt;branch&gt;.remote
+origin
+$ git config branch.&lt;branch&gt;.merge
+refs/heads/&lt;branch&gt;</pre>
         <p>
           There's another option, which is often more useful and leads to a much
           cleaner history: <code>git pull --rebase</code>. Unlike the merge
