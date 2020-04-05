@@ -628,10 +628,10 @@ refs/heads/&lt;branch&gt;</pre>
         <p>
           There's another option, which is often more useful and leads to a much
           cleaner history: <code>git pull --rebase</code>. Unlike the merge
-          approach, this is equivalent to the following:
+          approach, this is mostly<a id="ref-4" href="#note-4"><sup>4</sup></a> equivalent to the following:
         </p>
         <pre>git fetch origin
-git rebase origin/master</pre>
+git rebase origin/&lt;branch&gt;</pre>
         <p>
           The merge approach is simpler and easier to understand, but the rebase
           approach is almost always what you want to do if you understand how to
@@ -661,8 +661,8 @@ git rebase origin/master</pre>
         <pre>git rebase --onto master feature-1 feature-2</pre>
         <p>
           The non-interactive rebase does the default operation for all
-          implicated commits ("pick")<a id="ref-4"
-            href="#note-4"><sup>4</sup></a>, which simply replays the
+          implicated commits ("pick")<a id="ref-5"
+            href="#note-5"><sup>5</sup></a>, which simply replays the
           commits in feature-2 that are not in feature-1 on top of
           master. Your history now looks like this:
         </p>
@@ -738,11 +738,22 @@ git rebase origin/master</pre>
         </div>
         <div>
           <sup id="note-4">
-            4: Actually, it doesn't. The default non-interactive behavior
+            4: Actually, it depends if the upstream branch was itself rebased
+            or dropped/squashed some commits.
+            <a href="https://git-scm.com/docs/git-pull#Documentation/git-pull.txt--r"><code>git pull --rebase</code></a>
+            tries to recover from that situation by using the "fork-point" machinery in
+            <a href="https://git-scm.com/docs/git-rebase#Documentation/git-rebase.txt---fork-point"><code>git rebase</code></a>
+            and <a href="https://git-scm.com/docs/git-merge-base#_discussion_on_fork_point_mode"><code>git merge-base</code></a>
+            to avoid rebasing non-local commits. <a href="#ref-4">↩</a>
+          </sup>
+        </div>
+        <div>
+          <sup id="note-5">
+            5: Actually, it doesn't. The default non-interactive behavior
             differs slightly from the interactive behavior at the time of
             writing, in a way which is generally not important. This may change
             in the future - the relevant discussions are underway on the git
-            mailing list. <a href="#ref-4">↩</a>
+            mailing list. <a href="#ref-5">↩</a>
           </sup>
         </div>
       </footer>
