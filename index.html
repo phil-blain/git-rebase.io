@@ -73,6 +73,7 @@
         <ol>
           <li><a href="#amending">Amending your last commit</a></li>
           <li><a href="#fixup">Fixing up older commits</a></li>
+          <li><a href="#autosquash">Using git rebase --autosquash</a></li>
           <li><a href="#squash">Squashing several commits into one</a></li>
           <li><a href="#edit">Splitting one commit into several</a></li>
           <li><a href="#reorder">Reordering commits</a></li>
@@ -187,6 +188,42 @@ git commit -a -m"fixup greeting.txt"</pre>
         <pre>$ git log -2 --oneline
 <span style="color: #A80">fcff6ae (</span><span style="color: blue">HEAD -&gt;</span> <span style="color: green">master</span><span style="color: #cc9000">)</span> Add farewell.txt
 <span style="color: #A80">a479e94</span> Add greeting.txt</pre>
+
+        <h2 id="autosquash">Using git rebase --autosquash</h2>
+        <p>
+          The steps described above can also be performed in a more automated
+          manner by taking advantage of the <code>--autosquash</code> option
+          of <code>git rebase</code> in combination with the
+          <code>--fixup</code> option of <code>git commit</code>:
+        </p>
+        <pre>git commit -a --fixup HEAD^
+git rebase -i --autosquash HEAD~3</pre>
+        <p>
+          This will prepare the rebase plan with commits reordered and
+          actions set up:
+        </p>
+        <pre><!--
+--><span style="color: #A80">pick</span> <span style="color: #06c">8d3fc77</span> <span style="color: purple">Add greeting.txt</span>
+<span style="color: #A80">fixup</span> <span style="color: #06c">0b9d0bb</span> <span style="color: purple">fixup! Add greeting.txt</span>
+<span style="color: #A80">pick</span> <span style="color: #06c">2a73a77</span> <span style="color: purple">Add farewell.txt</span>
+
+<span style="color: grey"># Rebase f5f19fb..0b9d0bb onto f5f19fb (3 commands)
+#
+# Commands:
+# p, pick &lt;commit&gt; = use commit
+# f, fixup &lt;commit&gt; = like "squash", but discard this commit's log message</span>
+        </pre>
+        <p>
+          In addition to <code>--fixup</code>, the <code>--squash</code>
+          option for <code>git commit</code> also exists and will allow you to
+          edit the commit message.
+        </p>
+        <p>
+          Finally, the <code>--autosquash</code> option can be omitted by
+          setting this behavior as the default through configuration:
+        </p>
+        <pre>git config --global rebase.autosquash true</pre>
+
         <h2 id="squash">Squashing several commits into one</h2>
         <p>
           As you work, you may find it useful to write lots of commits as you
