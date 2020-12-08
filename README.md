@@ -2,7 +2,8 @@
 
 The source of [git-rebase.io](https://git-rebase.io). Send
 patches to
-[~sircmpwn/public-inbox@lists.sr.ht](mailto:~sircmpwn/public-inbox@lists.sr.ht).
+[~sircmpwn/public-inbox@lists.sr.ht](mailto:~sircmpwn/public-inbox@lists.sr.ht),
+and browse the list archive at [lists.sr.ht/~sircmpwn/public-inbox](https://lists.sr.ht/~sircmpwn/public-inbox?search=git-rebase).
 
 ## Running locally
 
