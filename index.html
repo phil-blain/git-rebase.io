@@ -719,7 +719,7 @@ git rebase origin/&lt;branch&gt;</pre>
           conflict markers in the affected files, <code>git status</code> will
           show you what you need to resolve, and you can mark files as resolved
           with <code>git add</code> or <code>git rm</code>. However, in the
-          context of a git rebase, there are two options you should be aware of.
+          context of a git rebase, there are a few options you should be aware of.
         </p>
         <p>
           The first is how you complete the conflict resolution. Rather than
@@ -732,6 +732,22 @@ git rebase origin/&lt;branch&gt;</pre>
           when git doesn't realize that a commit it's pulled from the "other"
           branch is an updated version of the commit that it conflicts with on
           "our" branch.
+        </p>
+        <p>
+          If you want to take a look at the diff of the commit that Git failed to
+          replay, and which resulted in a merge conflict, you can use
+          <code>git rebase --show-current-patch</code>, or its
+          equivalent <code>git show REBASE_HEAD</code>.
+        </p>
+        <p>
+          Finally, it's worth noting that when using <code>git checkout --ours</code>
+          or <code>--theirs</code> to quickly resolve
+          conflicted paths by checking out a specific version from the index,
+          the meaning of those options is reversed compared to a regular <code>git merge</code>
+          merge conflict: during rebase, <code>--theirs</code> refers to the changes
+          from the branch being rebased (<code>REBASE_HEAD</code>), and <code>--ours</code>
+          refers to the changes from the branch onto which we are rebasing
+          (<code>HEAD</code>)<a id="ref-6" href="#note-6"><sup>6</sup></a>.
         </p>
         <h2 id="reflog">Help! I broke it!</h2>
         <p>
@@ -791,6 +807,14 @@ git rebase origin/&lt;branch&gt;</pre>
             interactive behavior until
             <a href="https://raw.githubusercontent.com/git/git/master/Documentation/RelNotes/2.26.0.txt">version 2.26.0</a>,
             in a way which is generally not important. <a href="#ref-5">↩</a>
+          </sup>
+        </div>
+        <div>
+          <sup id="note-6">
+            6: If you're having a hard time remembering that, a nice trick
+            is to choose either one of the two options, and then recreate the
+            conflict with <code>git checkout --merge .</code>. The conflict markers
+            will be rewritten and will now clearly be labeled as "ours" and "theirs".
           </sup>
         </div>
       </footer>
